@@ -94,6 +94,29 @@ public class Crittercism
 		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
+    
+	/// <summary>
+	/// Tell Crittercism to associate the given value/key pair with the current
+	/// device UUID.
+	/// <param name="val">The metadata value to set</param>
+	/// <param name="key">The key to associate with the given metadata<c/param>
+	/// <example>SetValue("5", "Game Level")</example>
+	/// </summary>
+	public static void SetMetadata (string[] keys, string[] values)
+	{
+#if UNITY_IPHONE
+        int length = keys.Length;
+        for (int i = 0; i < length; i++) {
+            string key = keys[i];
+            string value = values[i];
+    		CrittercismIOS.SetValue (value, key);   
+        }
+#elif UNITY_ANDROID
+		CrittercismAndroid.SetMetadata (keys, values);
+#else
+		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
+#endif
+	}
 
 	/// <summary>
 	/// Log a breadcrumb.  Breadcrumbs are used for tracking local events.  Breadcrumbs
