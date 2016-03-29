@@ -22,8 +22,6 @@ public class Crittercism : MonoBehaviour
         CrittercismIOS.Init (CrittercismiOSAppID);
         #elif UNITY_ANDROID
         CrittercismAndroid.Init (CrittercismAndroidAppID);
-        #else
-        UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism will not be enabled");
         #endif
     }
 
@@ -38,8 +36,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.LogHandledException (e);
 #elif UNITY_ANDROID
 		CrittercismAndroid.LogHandledException (e);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -55,7 +51,6 @@ public class Crittercism : MonoBehaviour
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetOptOut ();
 #else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 		return true;
 #endif
 	}
@@ -70,8 +65,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.SetOptOut (isOptedOut);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetOptOut (isOptedOut);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif	
 	}
 
@@ -85,8 +78,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.SetUsername (username);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetUsername (username);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -103,8 +94,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.SetValue (value, key);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetMetadata (new string[] {key}, new string[] {value});
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
     
@@ -126,8 +115,6 @@ public class Crittercism : MonoBehaviour
         }
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetMetadata (keys, values);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -144,8 +131,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.LeaveBreadcrumb (breadcrumb);
 #elif UNITY_ANDROID
 		CrittercismAndroid.LeaveBreadcrumb (breadcrumb);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -173,8 +158,6 @@ public class Crittercism : MonoBehaviour
 											  bytesSent,
 											  responseCode,
 											  exceptionStatus);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -202,8 +185,6 @@ public class Crittercism : MonoBehaviour
 											  bytesSent,
 											  responseCode,
 											  exceptionStatus);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -217,7 +198,6 @@ public class Crittercism : MonoBehaviour
 #elif UNITY_ANDROID
 		return CrittercismAndroid.DidCrashOnLastLoad ();
 #else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 		return false;
 #endif
 	}
@@ -231,8 +211,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.BeginTransaction (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginTransaction (name);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -246,8 +224,6 @@ public class Crittercism : MonoBehaviour
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginTransaction (name);
 		CrittercismAndroid.SetTransactionValue (name, value);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -260,8 +236,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.CancelTransaction (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.CancelTransaction (name);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -274,8 +248,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.EndTransaction (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.EndTransaction (name);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -288,8 +260,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.FailTransaction (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.FailTransaction (name);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -302,8 +272,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.SetTransactionValue (name, value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetTransactionValue (name, value);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif
 	}
 
@@ -317,7 +285,6 @@ public class Crittercism : MonoBehaviour
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetTransactionValue (name);
 #else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 		return -1;
 #endif
 	}
@@ -331,8 +298,6 @@ public class Crittercism : MonoBehaviour
 		CrittercismIOS.SetLogUnhandledExceptionAsCrash (value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetLogUnhandledExceptionAsCrash (value);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 #endif	
 	}
 
@@ -346,9 +311,7 @@ public class Crittercism : MonoBehaviour
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetLogUnhandledExceptionAsCrash ();
 #else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
 		return false;
 #endif
 	}
 }
-
