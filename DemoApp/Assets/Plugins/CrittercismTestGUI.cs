@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class CrittercismTestGUI : MonoBehaviour
 {
+    public string MyTest = "hello";
+
 	private CrittercismTestGUI() {
 		Debug.Log ("DidCrashOnLastLoad: " + Crittercism.DidCrashOnLastLoad ());
 		Crittercism.SetLogUnhandledExceptionAsCrash (true);

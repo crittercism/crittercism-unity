@@ -1,18 +1,31 @@
 ﻿using System;
 using System.Net;
+using UnityEngine;
 
-public class Crittercism
+public class Crittercism : MonoBehaviour
 {
-	public static void Init (string appID)
-	{
-#if UNITY_IPHONE
-		CrittercismIOS.Init (appID);
-#elif UNITY_ANDROID
-		CrittercismAndroid.Init (appID);
-#else
-		UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism will not be enabled");
-#endif
-	}
+    /// <summary>
+    /// Your Crittercism App ID.  Every app has a special identifier that allows Crittercism
+    /// to associate error monitoring data with your app.  Your app ID can be found on the
+    /// "App Settings" page of the app you are trying to monitor.
+    /// See the Crittercism portal https://app.crittercism.com/
+    /// </summary>
+    /// <example>A real app ID looks like this:  5671d3b6f7c78a7243000a05</example>
+
+    public string CrittercismiOSAppID = "YOUR IOS APP ID GOES HERE";
+
+    public string CrittercismAndroidAppID = "YOUR ANDROID APP ID GOES HERE";
+
+    void Awake ()
+    {
+        #if UNITY_IPHONE
+        CrittercismIOS.Init (CrittercismiOSAppID);
+        #elif UNITY_ANDROID
+        CrittercismAndroid.Init (CrittercismAndroidAppID);
+        #else
+        UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism will not be enabled");
+        #endif
+    }
 
 	/// <summary>
 	/// Log an exception that has been handled in code.
