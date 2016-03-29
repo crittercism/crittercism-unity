@@ -48,25 +48,25 @@ public static class CrittercismIOS
 	private static extern bool Crittercism_GetOptOutStatus ();
 
 	[DllImport("__Internal")]
-	private static extern void Crittercism_BeginTransaction (string name);
+	private static extern void Crittercism_BeginUserflow (string name);
 
 	[DllImport("__Internal")]
-	private static extern void Crittercism_BeginTransactionWithValue (string name, int value);
+	private static extern void Crittercism_BeginUserflowWithValue (string name, int value);
 
 	[DllImport("__Internal")]
-	private static extern void Crittercism_EndTransaction (string name);
+	private static extern void Crittercism_EndUserflow (string name);
 
 	[DllImport("__Internal")]
-	private static extern void Crittercism_FailTransaction (string name);
+	private static extern void Crittercism_FailUserflow (string name);
 	
 	[DllImport("__Internal")]
-	private static extern void Crittercism_CancelTransaction (string name);
+	private static extern void Crittercism_CancelUserflow (string name);
 
 	[DllImport("__Internal")]
-	private static extern void Crittercism_SetTransactionValue (string name, int value);
+	private static extern void Crittercism_SetUserflowValue (string name, int value);
 
 	[DllImport("__Internal")]
-	private static extern int Crittercism_GetTransactionValue (string name);
+	private static extern int Crittercism_GetUserflowValue (string name);
 
 	// Crittercism-ios CRPluginException.h defines crPlatformId crUnityId = 0 .
 	private const int crUnityId = 0;
@@ -242,7 +242,7 @@ public static class CrittercismIOS
 	public static void BeginTransaction (string name)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_BeginTransaction (name);
+			Crittercism_BeginUserflow (name);
 		}
 	}
 
@@ -252,7 +252,7 @@ public static class CrittercismIOS
 	public static void BeginTransaction (string name, int value)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_BeginTransactionWithValue (name, value);
+			Crittercism_BeginUserflowWithValue (name, value);
 		}
 	}
 	
@@ -262,7 +262,7 @@ public static class CrittercismIOS
 	public static void CancelTransaction (string name)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_CancelTransaction (name);
+			Crittercism_CancelUserflow (name);
 		}
 	}
 
@@ -272,7 +272,7 @@ public static class CrittercismIOS
 	public static void EndTransaction (string name)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_EndTransaction (name);
+			Crittercism_EndUserflow (name);
 		}
 	}
 	
@@ -282,7 +282,7 @@ public static class CrittercismIOS
 	public static void FailTransaction (string name)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_FailTransaction (name);
+			Crittercism_FailUserflow (name);
 		}
 	}
 	
@@ -292,7 +292,7 @@ public static class CrittercismIOS
 	public static void SetTransactionValue (string name, int value)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_SetTransactionValue (name, value);
+			Crittercism_SetUserflowValue (name, value);
 		}
 		;
 	}
@@ -303,7 +303,7 @@ public static class CrittercismIOS
 	public static int GetTransactionValue (string name)
 	{
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			return Crittercism_GetTransactionValue (name);
+			return Crittercism_GetUserflowValue (name);
 		} else {
 			return -1;
 		}
