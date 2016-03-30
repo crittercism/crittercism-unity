@@ -217,59 +217,101 @@ public static class CrittercismIOS
 	}
 
 	/// <summary>
-	/// Init and begin a transaction with a default value.
+	/// Init and begin a userflow with a default value.
 	/// </summary>
-	public static void BeginTransaction (string name)
+	public static void BeginUserflow (string name)
 	{
 		Crittercism_BeginUserflow (name);
 	}
 
+	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
+	public static void BeginTransaction (string name)
+	{
+		BeginUserflow (name);
+	}
+
 	/// <summary>
-	/// Init and begin a transaction with an input value.
+	/// Init and begin a userflow with an input value.
 	/// </summary>
-	public static void BeginTransaction (string name, int value)
+	public static void BeginUserflow (string name, int value)
 	{
 		Crittercism_BeginUserflowWithValue (name, value);
 	}
+
+	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
+	public static void BeginTransaction (string name, int value)
+	{
+		BeginUserflow (name, value);
+	}
 	
 	/// <summary>
-	/// Cancel a transaction as if it never existed.
+	/// Cancel a userflow as if it never existed.
 	/// </summary>
-	public static void CancelTransaction (string name)
+	public static void CancelUserflow (string name)
 	{
 		Crittercism_CancelUserflow (name);
 	}
 
+	[Obsolete("CancelTransaction is deprecated, please use CancelUserflow instead.")]
+	public static void CancelTransaction (string name)
+	{
+		CancelUserflow (name);
+	}
+
 	/// <summary>
-	/// End an already begun transaction successfully.
+	/// End an already begun userflow successfully.
 	/// </summary>
-	public static void EndTransaction (string name)
+	public static void EndUserflow (string name)
 	{
 		Crittercism_EndUserflow (name);
 	}
+
+	[Obsolete("EndTransaction is deprecated, please use EndUserflow instead.")]
+	public static void EndTransaction (string name)
+	{
+		EndUserflow (name);
+	}
 	
 	/// <summary>
-	/// End an already begun transaction as a failure.
+	/// End an already begun userflow as a failure.
 	/// </summary>
-	public static void FailTransaction (string name)
+	public static void FailUserflow (string name)
 	{
 		Crittercism_FailUserflow (name);
 	}
-	
-	/// <summary>
-	/// Set the currency cents value of a transaction.
-	/// </summary>
-	public static void SetTransactionValue (string name, int value)
+
+	[Obsolete("FailTransaction is deprecated, please use FailUserflow instead.")]
+	public static void FailTransaction (string name)
 	{
-		Crittercism_SetUserflowValue (name, value);
+		FailUserflow (name);
 	}
 	
 	/// <summary>
-	/// Get the currency cents value of a transaction.
+	/// Set the currency cents value of a userflow.
 	/// </summary>
-	public static int GetTransactionValue (string name)
+	public static void SetUserflowValue (string name, int value)
+	{
+		Crittercism_SetUserflowValue (name, value);
+	}
+
+	[Obsolete("SetTransactionValue is deprecated, please use SetUserflowValue instead.")]
+	public static void SetTransactionValue (string name, int value)
+	{
+		SetUserflowValue (name, value);
+	}
+
+	/// <summary>
+	/// Get the currency cents value of a userflow.
+	/// </summary>
+	public static int GetUserflowValue (string name)
 	{
 		return Crittercism_GetUserflowValue (name);
+	}
+
+	[Obsolete("GetTransactionValue is deprecated, please use GetUserflowValue instead.")]
+	public static int GetTransactionValue (string name)
+	{
+		return GetUserflowValue (name);
 	}
 
 	private static void OnUnhandledException (object sender, UnhandledExceptionEventArgs args)

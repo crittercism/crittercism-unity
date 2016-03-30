@@ -208,7 +208,7 @@ public class Crittercism : MonoBehaviour
 	public static void BeginUserflow (string name)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.BeginTransaction (name);
+		CrittercismIOS.BeginUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginTransaction (name);
 #endif
@@ -220,7 +220,7 @@ public class Crittercism : MonoBehaviour
 	public static void BeginUserflow (string name, int value)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.BeginTransaction (name, value);
+		CrittercismIOS.BeginUserflow (name, value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginTransaction (name);
 		CrittercismAndroid.SetTransactionValue (name, value);
@@ -233,7 +233,7 @@ public class Crittercism : MonoBehaviour
 	public static void CancelUserflow (string name)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.CancelTransaction (name);
+		CrittercismIOS.CancelUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.CancelTransaction (name);
 #endif
@@ -245,7 +245,7 @@ public class Crittercism : MonoBehaviour
 	public static void EndUserflow (string name)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.EndTransaction (name);
+		CrittercismIOS.EndUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.EndTransaction (name);
 #endif
@@ -257,7 +257,7 @@ public class Crittercism : MonoBehaviour
 	public static void FailUserflow (string name)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.FailTransaction (name);
+		CrittercismIOS.FailUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.FailTransaction (name);
 #endif
@@ -269,7 +269,7 @@ public class Crittercism : MonoBehaviour
 	public static void SetUserflowValue (string name, int value)
 	{
 #if UNITY_IPHONE
-		CrittercismIOS.SetTransactionValue (name, value);
+		CrittercismIOS.SetUserflowValue (name, value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetTransactionValue (name, value);
 #endif
@@ -281,7 +281,7 @@ public class Crittercism : MonoBehaviour
 	public static int GetUserflowValue (string name)
 	{
 #if UNITY_IPHONE
-		return CrittercismIOS.GetTransactionValue (name);
+		return CrittercismIOS.GetUserflowValue (name);
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetTransactionValue (name);
 #else
