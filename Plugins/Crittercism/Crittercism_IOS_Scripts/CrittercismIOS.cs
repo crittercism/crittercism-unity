@@ -83,10 +83,6 @@ public static class CrittercismIOS
 	/// in the Crittercism web portal under "App Settings".</param>
 	public static void Init (string appID)
 	{
-		if (Application.platform != RuntimePlatform.IPhonePlayer) {
-			Debug.Log ("CrittercismIOS only supports the iOS platform. Crittercism will not be enabled");
-			return;
-		}
 		if (appID == null) {
 			Debug.Log ("Crittercism given a null app ID");
 			return;
@@ -142,9 +138,7 @@ public static class CrittercismIOS
 		if (e == null) {
 			return;
 		}
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_LogHandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
-		}
+		Crittercism_LogHandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
 	}
 
 	/// <summary>
@@ -154,11 +148,7 @@ public static class CrittercismIOS
 	/// <returns>True if the user has opted out of Crittercism</returns>
 	public static bool GetOptOut ()
 	{
-		bool isOptedOut = true;
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			isOptedOut = Crittercism_GetOptOutStatus ();
-		}
-		return isOptedOut;
+		return Crittercism_GetOptOutStatus ();
 	}
 
 	/// <summary>
@@ -167,9 +157,7 @@ public static class CrittercismIOS
 	/// <param name="isOptedOut">True to opt out of sending data to Crittercism</param>
 	public static void SetOptOut (bool isOptedOut)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_SetOptOutStatus (isOptedOut);
-		}
+		Crittercism_SetOptOutStatus (isOptedOut);
 	}
 
 	/// <summary>
@@ -178,9 +166,7 @@ public static class CrittercismIOS
 	/// <param name="username">The user name to set</param>
 	public static void SetUsername (string username)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_SetUsername (username);
-		}
+		Crittercism_SetUsername (username);
 	}
 
 	/// <summary>
@@ -192,9 +178,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void SetValue (string val, string key)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_SetValue (val, key);
-		}
+		Crittercism_SetValue (val, key);
 	}
 
 	/// <summary>
@@ -206,9 +190,7 @@ public static class CrittercismIOS
 	/// <example>LeaveBreadcrumb("Game started");</example>
 	public static void LeaveBreadcrumb (string breadcrumb)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_LeaveBreadcrumb (breadcrumb);
-		}
+		Crittercism_LeaveBreadcrumb (breadcrumb);
 	}
 
 	public static void LogNetworkRequest (string method,
@@ -219,9 +201,7 @@ public static class CrittercismIOS
 	                                      HttpStatusCode responseCode,
 	                                      WebExceptionStatus exceptionStatus)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_LogNetworkRequest (method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
-		}
+		Crittercism_LogNetworkRequest (method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
 	}
 
 	/// <summary>
@@ -241,9 +221,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void BeginTransaction (string name)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_BeginUserflow (name);
-		}
+		Crittercism_BeginUserflow (name);
 	}
 
 	/// <summary>
@@ -251,9 +229,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void BeginTransaction (string name, int value)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_BeginUserflowWithValue (name, value);
-		}
+		Crittercism_BeginUserflowWithValue (name, value);
 	}
 	
 	/// <summary>
@@ -261,9 +237,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void CancelTransaction (string name)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_CancelUserflow (name);
-		}
+		Crittercism_CancelUserflow (name);
 	}
 
 	/// <summary>
@@ -271,9 +245,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void EndTransaction (string name)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_EndUserflow (name);
-		}
+		Crittercism_EndUserflow (name);
 	}
 	
 	/// <summary>
@@ -281,9 +253,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void FailTransaction (string name)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_FailUserflow (name);
-		}
+		Crittercism_FailUserflow (name);
 	}
 	
 	/// <summary>
@@ -291,10 +261,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void SetTransactionValue (string name, int value)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			Crittercism_SetUserflowValue (name, value);
-		}
-		;
+		Crittercism_SetUserflowValue (name, value);
 	}
 	
 	/// <summary>
@@ -302,11 +269,7 @@ public static class CrittercismIOS
 	/// </summary>
 	public static int GetTransactionValue (string name)
 	{
-		if (Application.platform == RuntimePlatform.IPhonePlayer) {
-			return Crittercism_GetUserflowValue (name);
-		} else {
-			return -1;
-		}
+		return Crittercism_GetUserflowValue (name);
 	}
 
 	private static void OnUnhandledException (object sender, UnhandledExceptionEventArgs args)
@@ -317,10 +280,8 @@ public static class CrittercismIOS
 		try {
 			Exception e = args.ExceptionObject as Exception;
 			if (e != null) {
-				if (Application.platform == RuntimePlatform.IPhonePlayer) {
-					// Should never get here since the Init() call would have bailed on the same if statement
-					Crittercism_LogUnhandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
-				}
+				// Should never get here since the Init() call would have bailed on the same if statement
+				Crittercism_LogUnhandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
 			}
 		} catch {
 			if (Debug.isDebugBuild == true) {
@@ -348,12 +309,10 @@ public static class CrittercismIOS
 	private static void OnLogMessageReceived (String name, String stack, LogType type)
 	{
 		if (type == LogType.Exception) {
-			if (Application.platform == RuntimePlatform.IPhonePlayer) {
-				if (logUnhandledExceptionAsCrash) {
-					Crittercism_LogUnhandledException (name, name, stack, crUnityId);
-				} else {
-					Crittercism_LogHandledException (name, name, stack, crUnityId);
-				}
+			if (logUnhandledExceptionAsCrash) {
+				Crittercism_LogUnhandledException (name, name, stack, crUnityId);
+			} else {
+				Crittercism_LogHandledException (name, name, stack, crUnityId);
 			}
 		}
 	}
