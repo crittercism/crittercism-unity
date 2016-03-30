@@ -1,6 +1,7 @@
 #if UNITY_ANDROID
 
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -206,71 +207,107 @@ public static class CrittercismAndroid
 	}
 		
 	/// <summary>
-	/// Begin a transaction to track ex. login
+	/// Begin a userflow to track ex. login
 	/// </summary>
-	public static void BeginTransaction (string transactionName)
+	public static void BeginUserflow (string userflowName)
 	{
 		if (!isInitialized) {
 			return;
 		}
-		PluginCallStatic ("beginTransaction", transactionName);
+		PluginCallStatic ("beginTransaction", userflowName);
+	}
+
+	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
+	public static void BeginTransaction (string userflowName)
+	{
+		BeginUserflow (userflowName);
 	}
 	
 	/// <summary>
-	/// Cancel a transaction as if it never existed.
+	/// Cancel a userflow as if it never existed.
 	/// </summary>
-	public static void CancelTransaction (string transactionName)
+	public static void CancelUserflow (string userflowName)
 	{
 		if (!isInitialized) {
 			return;
 		}
-		PluginCallStatic ("cancelTransaction", transactionName);
+		PluginCallStatic ("cancelTransaction", userflowName);
+	}
+
+	[Obsolete("CancelTransaction is deprecated, please use CancelUserflow instead.")]
+	public static void CancelTransaction (string userflowName)
+	{
+		CancelUserflow (userflowName);
 	}
 		
 	/// <summary>
-	/// Ends a tracked transaction ex. login was successful
+	/// Ends a tracked userflow ex. login was successful
 	/// </summary>
-	public static void EndTransaction (string transactionName)
+	public static void EndUserflow (string userflowName)
 	{
 		if (!isInitialized) {
 			return;
 		}
-		PluginCallStatic ("endTransaction", transactionName);
+		PluginCallStatic ("endTransaction", userflowName);
 	}
-	
+
+	[Obsolete("EndTransaction is deprecated, please use EndUserflow instead.")]
+	public static void EndTransaction (string userflowName)
+	{
+		EndUserflow (userflowName);
+	}
+
 	/// <summary>
-	/// Fails a tracked transaction ex. login error
+	/// Fails a tracked userflow ex. login error
 	/// </summary>
-	public static void FailTransaction (string transactionName)
+	public static void FailUserflow (string userflowName)
 	{
 		if (!isInitialized) {
 			return;
 		}
-		PluginCallStatic ("failTransaction", transactionName);
+		PluginCallStatic ("failTransaction", userflowName);
 	}
-		
+
+	[Obsolete("FailTransaction is deprecated, please use FailUserflow instead.")]
+	public static void FailTransaction (string userflowName)
+	{
+		FailUserflow (userflowName);
+	}
+
 	/// <summary>
-	/// Set a value for a transaction ex. shopping cart value
+	/// Set a value for a userflow ex. shopping cart value
 	/// </summary>
-	public static void SetTransactionValue (string transactionName, int value)
+	public static void SetUserflowValue (string userflowName, int value)
 	{
 		if (!isInitialized) {
 			return;
 		}
-		PluginCallStatic ("setTransactionValue", transactionName, value);
+		PluginCallStatic ("setTransactionValue", userflowName, value);
 	}
-		
+
+	[Obsolete("SetTransactionValue is deprecated, please use SetUserflowValue instead.")]
+	public static void SetTransactionValue (string userflowName, int value)
+	{
+		SetUserflowValue (userflowName, value);
+	}
+
 	/// <summary>
-	/// Get the current value of the tracked transaction
+	/// Get the current value of the tracked userflow
 	/// </summary>
-	public static int GetTransactionValue (string transactionName)
+	public static int GetUserflowValue (string userflowName)
 	{
 		if (!isInitialized) {
 			return -1;
 		}
-		return PluginCallStatic<int> ("getTransactionValue", transactionName);
+		return PluginCallStatic<int> ("getTransactionValue", userflowName);
 	}
-		
+
+	[Obsolete("GetTransactionValue is deprecated, please use GetUserflowValue instead.")]
+	public static int GetTransactionValue (string userflowName)
+	{
+		return GetUserflowValue (userflowName);
+	}
+
 	private static void OnUnhandledException (object sender, System.UnhandledExceptionEventArgs args)
 	{
 		if (!isInitialized || args == null || args.ExceptionObject == null) {

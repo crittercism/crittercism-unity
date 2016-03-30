@@ -82,24 +82,24 @@ public class CrittercismTestGUI : MonoBehaviour
 				Crittercism.LogHandledException (e);
 			}
 		}
-		if (GUI.Button (new Rect (0, 7 * screenButtonHeight, Screen.width, screenButtonHeight), "Begin Transaction", customStyle)) {
-			Crittercism.BeginTransaction ("UnityUserflow");
+		if (GUI.Button (new Rect (0, 7 * screenButtonHeight, Screen.width, screenButtonHeight), "Begin Userflow", customStyle)) {
+			Crittercism.BeginUserflow ("UnityUserflow");
 		}
-		if (GUI.Button (new Rect (0, 8 * screenButtonHeight, Screen.width, screenButtonHeight), "End Transaction", customStyle)) {
-			Crittercism.EndTransaction ("UnityUserflow");
+		if (GUI.Button (new Rect (0, 8 * screenButtonHeight, Screen.width, screenButtonHeight), "End Userflow", customStyle)) {
+			Crittercism.EndUserflow ("UnityUserflow");
 		}
-		if (GUI.Button (new Rect (0, 9 * screenButtonHeight, Screen.width, screenButtonHeight), "Fail Transaction", customStyle)) {
-			Crittercism.FailTransaction ("UnityUserflow");
+		if (GUI.Button (new Rect (0, 9 * screenButtonHeight, Screen.width, screenButtonHeight), "Fail Userflow", customStyle)) {
+			Crittercism.FailUserflow ("UnityUserflow");
 		}
-		if (GUI.Button (new Rect (0, 10 * screenButtonHeight, Screen.width, screenButtonHeight), "Cancel Transaction", customStyle)) {
-			Crittercism.CancelTransaction ("UnityUserflow");
+		if (GUI.Button (new Rect (0, 10 * screenButtonHeight, Screen.width, screenButtonHeight), "Cancel Userflow", customStyle)) {
+			Crittercism.CancelUserflow ("UnityUserflow");
 		}
-		if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Set Transaction Value", customStyle)) {
-			Crittercism.SetTransactionValue ("UnityUserflow", 500);
+		if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Set Userflow Value", customStyle)) {
+			Crittercism.SetUserflowValue ("UnityUserflow", 500);
 		}
-		if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Get Transaction Value", customStyle)) {
-			int value = Crittercism.GetTransactionValue ("UnityUserflow");
-			Debug.Log ("TransactionValue is: " + value);
+		if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Get Userflow Value", customStyle)) {
+			int value = Crittercism.GetUserflowValue ("UnityUserflow");
+			Debug.Log ("UserflowValue is: " + value);
 		}
 	}
 	
