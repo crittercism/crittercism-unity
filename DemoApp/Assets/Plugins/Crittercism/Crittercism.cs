@@ -210,7 +210,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.BeginUserflow (name);
 #elif UNITY_ANDROID
-		CrittercismAndroid.BeginTransaction (name);
+		CrittercismAndroid.BeginUserflow (name);
 #endif
 	}
 
@@ -222,8 +222,8 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.BeginUserflow (name, value);
 #elif UNITY_ANDROID
-		CrittercismAndroid.BeginTransaction (name);
-		CrittercismAndroid.SetTransactionValue (name, value);
+		CrittercismAndroid.BeginUserflow (name);
+		CrittercismAndroid.SetUserflowValue (name, value);
 #endif
 	}
 
@@ -235,7 +235,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.CancelUserflow (name);
 #elif UNITY_ANDROID
-		CrittercismAndroid.CancelTransaction (name);
+		CrittercismAndroid.CancelUserflow (name);
 #endif
 	}
 
@@ -247,7 +247,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.EndUserflow (name);
 #elif UNITY_ANDROID
-		CrittercismAndroid.EndTransaction (name);
+		CrittercismAndroid.EndUserflow (name);
 #endif
 	}
 
@@ -259,7 +259,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.FailUserflow (name);
 #elif UNITY_ANDROID
-		CrittercismAndroid.FailTransaction (name);
+		CrittercismAndroid.FailUserflow (name);
 #endif
 	}
 
@@ -271,7 +271,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		CrittercismIOS.SetUserflowValue (name, value);
 #elif UNITY_ANDROID
-		CrittercismAndroid.SetTransactionValue (name, value);
+		CrittercismAndroid.SetUserflowValue (name, value);
 #endif
 	}
 
@@ -283,7 +283,7 @@ public class Crittercism : MonoBehaviour
 #if UNITY_IPHONE
 		return CrittercismIOS.GetUserflowValue (name);
 #elif UNITY_ANDROID
-		return CrittercismAndroid.GetTransactionValue (name);
+		return CrittercismAndroid.GetUserflowValue (name);
 #else
 		return -1;
 #endif
