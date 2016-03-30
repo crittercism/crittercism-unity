@@ -18,11 +18,11 @@ public class Crittercism : MonoBehaviour
 
     void Awake ()
     {
-        #if UNITY_IPHONE
+#if UNITY_IPHONE
         CrittercismIOS.Init (CrittercismiOSAppID);
-        #elif UNITY_ANDROID
+#elif UNITY_ANDROID
         CrittercismAndroid.Init (CrittercismAndroidAppID);
-        #endif
+#endif
     }
 
 	/// <summary>
@@ -203,9 +203,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Init and begin a transaction with a default value.
+	/// Init and begin a userflow with a default value.
 	/// </summary>
-	public static void BeginTransaction (string name)
+	public static void BeginUserflow (string name)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.BeginTransaction (name);
@@ -215,9 +215,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Init and begin a transaction with an input value.
+	/// Init and begin a userflow with an input value.
 	/// </summary>
-	public static void BeginTransaction (string name, int value)
+	public static void BeginUserflow (string name, int value)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.BeginTransaction (name, value);
@@ -228,9 +228,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Cancel a transaction as if it never existed.
+	/// Cancel a userflow as if it never existed.
 	/// </summary>
-	public static void CancelTransaction (string name)
+	public static void CancelUserflow (string name)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.CancelTransaction (name);
@@ -240,9 +240,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// End an already begun transaction successfully.
+	/// End an already begun userflow successfully.
 	/// </summary>
-	public static void EndTransaction (string name)
+	public static void EndUserflow (string name)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.EndTransaction (name);
@@ -252,9 +252,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// End an already begun transaction as a failure.
+	/// End an already begun userflow as a failure.
 	/// </summary>
-	public static void FailTransaction (string name)
+	public static void FailUserflow (string name)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.FailTransaction (name);
@@ -264,9 +264,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Set the currency cents value of a transaction.
+	/// Set the currency cents value of a userflow.
 	/// </summary>
-	public static void SetTransactionValue (string name, int value)
+	public static void SetUserflowValue (string name, int value)
 	{
 #if UNITY_IPHONE
 		CrittercismIOS.SetTransactionValue (name, value);
@@ -276,9 +276,9 @@ public class Crittercism : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Get the currency cents value of a transaction.
+	/// Get the currency cents value of a userflow.
 	/// </summary>
-	public static int GetTransactionValue (string name)
+	public static int GetUserflowValue (string name)
 	{
 #if UNITY_IPHONE
 		return CrittercismIOS.GetTransactionValue (name);
