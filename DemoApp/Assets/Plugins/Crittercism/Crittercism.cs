@@ -18,13 +18,10 @@ public class Crittercism : MonoBehaviour
 
     void Awake ()
     {
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
         CrittercismIOS.Init (CrittercismiOSAppID);
 #elif UNITY_ANDROID
-        CrittercismAndroid.Init (CrittercismAndroidAppID); 
-#else
-        UnityEngine.Debug.Log ("Crittercism Unity only supports iOS and Android. Crittercism is not enabled");
+        CrittercismAndroid.Init (CrittercismAndroidAppID);
 #endif
     }
 
@@ -35,8 +32,7 @@ public class Crittercism : MonoBehaviour
 	/// <param name="e">A caught exception that should be reported to Crittercism.</param>
 	public static void LogHandledException (Exception e)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.LogHandledException (e);
 #elif UNITY_ANDROID
 		CrittercismAndroid.LogHandledException (e);
@@ -50,8 +46,7 @@ public class Crittercism : MonoBehaviour
 	/// <returns>True if the user has opted out of Crittercism</returns>
 	public static bool GetOptOut ()
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		return CrittercismIOS.GetOptOut ();
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetOptOut ();
@@ -66,8 +61,7 @@ public class Crittercism : MonoBehaviour
 	/// <param name="isOptedOut">True to opt out of sending data to Crittercism</param>
 	public static void SetOptOut (bool isOptedOut)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.SetOptOut (isOptedOut);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetOptOut (isOptedOut);
@@ -80,8 +74,7 @@ public class Crittercism : MonoBehaviour
 	/// <param name="username">The user name to set</param>
 	public static void SetUsername (string username)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.SetUsername (username);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetUsername (username);
@@ -97,8 +90,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void SetValue (string key, string value)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.SetValue (value, key);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetMetadata (new string[] {key}, new string[] {value});
@@ -114,8 +106,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void SetMetadata (string[] keys, string[] values)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
         int length = keys.Length;
         for (int i = 0; i < length; i++) {
             string key = keys[i];
@@ -136,8 +127,7 @@ public class Crittercism : MonoBehaviour
 	/// <example>LeaveBreadcrumb("Game started");</example>
 	public static void LeaveBreadcrumb (string breadcrumb)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.LeaveBreadcrumb (breadcrumb);
 #elif UNITY_ANDROID
 		CrittercismAndroid.LeaveBreadcrumb (breadcrumb);
@@ -152,8 +142,7 @@ public class Crittercism : MonoBehaviour
 										  HttpStatusCode responseCode,
 										  WebExceptionStatus exceptionStatus)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.LogNetworkRequest (method,
  										  uriString,
 										  latencyInSeconds,
@@ -180,8 +169,7 @@ public class Crittercism : MonoBehaviour
 										  HttpStatusCode responseCode,
 										  WebExceptionStatus exceptionStatus)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.LogNetworkRequest (method,
 										  uriString,
 										  (double)latencyInMilliseconds/1000.0,
@@ -205,8 +193,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static bool DidCrashOnLastLoad ()
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		return CrittercismIOS.DidCrashOnLastLoad ();
 #elif UNITY_ANDROID
 		return CrittercismAndroid.DidCrashOnLastLoad ();
@@ -220,8 +207,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void BeginUserflow (string name)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.BeginUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginUserflow (name);
@@ -233,8 +219,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void BeginUserflow (string name, int value)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.BeginUserflow (name, value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.BeginUserflow (name);
@@ -247,8 +232,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void CancelUserflow (string name)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.CancelUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.CancelUserflow (name);
@@ -260,8 +244,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void EndUserflow (string name)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.EndUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.EndUserflow (name);
@@ -273,8 +256,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void FailUserflow (string name)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.FailUserflow (name);
 #elif UNITY_ANDROID
 		CrittercismAndroid.FailUserflow (name);
@@ -286,8 +268,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void SetUserflowValue (string name, int value)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.SetUserflowValue (name, value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetUserflowValue (name, value);
@@ -299,8 +280,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static int GetUserflowValue (string name)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		return CrittercismIOS.GetUserflowValue (name);
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetUserflowValue (name);
@@ -314,8 +294,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static void SetLogUnhandledExceptionAsCrash (bool value)
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		CrittercismIOS.SetLogUnhandledExceptionAsCrash (value);
 #elif UNITY_ANDROID
 		CrittercismAndroid.SetLogUnhandledExceptionAsCrash (value);
@@ -327,8 +306,7 @@ public class Crittercism : MonoBehaviour
 	/// </summary>
 	public static bool GetLogUnhandledExceptionAsCrash ()
 	{
-#if UNITY_EDITOR
-#elif UNITY_IPHONE
+#if UNITY_IPHONE
 		return CrittercismIOS.GetLogUnhandledExceptionAsCrash ();
 #elif UNITY_ANDROID
 		return CrittercismAndroid.GetLogUnhandledExceptionAsCrash ();
