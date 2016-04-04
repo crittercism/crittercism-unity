@@ -1,6 +1,7 @@
 using System;
 using System.Net;
 using UnityEngine;
+using System.Collections;
 
 public class CrittercismTestGUI : MonoBehaviour
 {
@@ -64,6 +65,16 @@ public class CrittercismTestGUI : MonoBehaviour
 				bytesSent,
 				(HttpStatusCode)responseCode,
 				WebExceptionStatus.Success);
+
+            WWW wwwGet = new WWW("http://httpbin.org/get");
+            StartCoroutine(WaitForRequest(wwwGet));
+
+            WWWForm form = new WWWForm ();
+            form.AddField ("fieldName", "fieldValue");
+            form.AddField ("test", "data");
+            WWW wwwPost = new WWW("http://httpbin.org/post", form);
+            StartCoroutine(WaitForRequest(wwwPost));
+
 		}
 		if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Crash", customStyle)) {
 			crashInnerException ();
@@ -102,6 +113,18 @@ public class CrittercismTestGUI : MonoBehaviour
 			Debug.Log ("UserflowValue is: " + value);
 		}
 	}
+
+    IEnumerator WaitForRequest(WWW www)
+    {
+        yield return www;
+        // check for errors
+        if (www.error == null)
+        {
+            Debug.Log("WWW Ok!: " + www.data);
+        } else {
+            Debug.Log("WWW Error: "+ www.error);
+        }    
+    }
 	
 	public void DeepError (int n)
 	{
