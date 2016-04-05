@@ -2,6 +2,7 @@ using System;
 using System.Net;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Experimental.Networking;
 
 public class CrittercismTestGUI : MonoBehaviour
 {
@@ -10,17 +11,6 @@ public class CrittercismTestGUI : MonoBehaviour
 		Debug.Log ("DidCrashOnLastLoad: " + Crittercism.DidCrashOnLastLoad ());
 		Crittercism.SetLogUnhandledExceptionAsCrash (true);
 	}
-
-	private static string[] uriStrings=new string[] {
-		"http://www.crittergerbil.com",
-		"http://www.critterhamster.com",
-		"http://www.crittermouse.com",
-		"http://www.critterrabbit.com",
-		"http://www.critterrobin.com",
-		"http://www.crittersnake.com",
-		"http://www.crittersquirrel.com",
-		"http://www.mrscritter.com"
-	};
 
 	public void OnGUI ()
 	{
@@ -39,42 +29,21 @@ public class CrittercismTestGUI : MonoBehaviour
 			Crittercism.LeaveBreadcrumb ("BreadCrumb");
 		}
 		if (GUI.Button (new Rect (0, 3 * screenButtonHeight, Screen.width, screenButtonHeight), "Log Network Request", customStyle)) {
-			System.Random random=new System.Random();
-			string[] methods=new string[] { "GET","POST","HEAD","PUT" };
-			string method=methods[random.Next(0,methods.Length)];
-			string uriString=uriStrings[random.Next(0,uriStrings.Length)];
-			if (random.Next(0,2)==1) {
-				uriString=uriString+"?doYouLoveCrittercism=YES";
-			}
-			// latency in milliseconds
-			long latency=(long)Math.Floor(4000.0*random.NextDouble());
-			int bytesRead=random.Next(0,10000);
-			int bytesSent=random.Next(0,10000);
-			int responseCode=200;
-			if (random.Next(0,5)==0) {
-				// Some common response other than 200 == OK .
-				int[] responseCodes=new int[] { 301,308,400,401,402,403,404,405,408,500,502,503 };
-				responseCode=responseCodes[random.Next(0,responseCodes.Length)];
-			}
-			Console.WriteLine("LogNetworkRequest: \""+uriString+"\"");
-			Crittercism.LogNetworkRequest(
-				method,
-				uriString,
-				latency,
-				bytesRead,
-				bytesSent,
-				(HttpStatusCode)responseCode,
-				WebExceptionStatus.Success);
 
-            WWW wwwGet = new WWW("http://httpbin.org/get");
-            StartCoroutine(WaitForRequest(wwwGet));
+            // Crittercism automatically logs network performance information for both UnityWebRequest and the WWW apis
+            StartCoroutine (UnityWebRequestGet ());
+            StartCoroutine (UnityWebRequestPost ());
+            StartCoroutine(WWWRequest());
 
-            WWWForm form = new WWWForm ();
-            form.AddField ("fieldName", "fieldValue");
-            form.AddField ("test", "data");
-            WWW wwwPost = new WWW("http://httpbin.org/post", form);
-            StartCoroutine(WaitForRequest(wwwPost));
-
+            // If you use a 3rd party networking API, you may log network performance information like this:
+            Crittercism.LogNetworkRequest(
+                "GET",
+                "http://myurl.com",
+                250,                  // latency in milliseconds
+                1024,                 // number of bytes received
+                2048,                 // number of bytes sent
+                (HttpStatusCode)200,  // http status code
+                WebExceptionStatus.Success);
 		}
 		if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Crash", customStyle)) {
 			crashInnerException ();
@@ -114,8 +83,38 @@ public class CrittercismTestGUI : MonoBehaviour
 		}
 	}
 
-    IEnumerator WaitForRequest(WWW www)
+    IEnumerator UnityWebRequestGet() {
+        using(UnityWebRequest www = UnityWebRequest.Get("http://httpbin.org/status/418")) {
+            yield return www.Send();
+
+            if(www.isError) {
+                Debug.Log(www.error);
+            } else {
+                Debug.Log(www.downloadHandler.text);
+            }
+        }
+    }
+
+    IEnumerator UnityWebRequestPost() {
+        WWWForm form = new WWWForm ();
+        form.AddField ("fieldName", "fieldValue");
+        form.AddField ("test", "data");
+
+        using(UnityWebRequest www = UnityWebRequest.Post("http://httpbin.org/post", form)) {
+            yield return www.Send();
+
+            if(www.isError) {
+                Debug.Log(www.error);
+            }
+            else {
+                Debug.Log("Form upload complete!");
+            }
+        }
+    }
+
+    IEnumerator WWWRequest()
     {
+        WWW www = new WWW("http://httpbin.org/get");
         yield return www;
         // check for errors
         if (www.error == null)
