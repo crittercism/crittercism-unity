@@ -1,4 +1,6 @@
-#if UNITY_IPHONE
+#if !UNITY_EDITOR && UNITY_IOS
+#define CRITTERCISM_IOS
+#endif
 
 using UnityEngine;
 using System;
@@ -8,6 +10,7 @@ using System.Runtime.InteropServices;
 
 public static class CrittercismIOS
 {
+#if CRITTERCISM_IOS
 	[DllImport("__Internal")]
 	private static extern void Crittercism_EnableWithAppID (string appID, bool enableServiceMonitoring);
 
@@ -67,6 +70,7 @@ public static class CrittercismIOS
 
 	[DllImport("__Internal")]
 	private static extern int Crittercism_GetUserflowValue (string name);
+#endif // CRITTERCISM_IOS
 
 	// Crittercism-ios CRPluginException.h defines crPlatformId crUnityId = 0 .
 	private const int crUnityId = 0;
@@ -83,6 +87,7 @@ public static class CrittercismIOS
 	/// in the Crittercism web portal under "App Settings".</param>
 	public static void Init (string appID)
 	{
+#if CRITTERCISM_IOS
 		if (appID == null) {
 			Debug.Log ("Crittercism given a null app ID");
 			return;
@@ -95,10 +100,12 @@ public static class CrittercismIOS
 		} catch {
 			Debug.Log ("Crittercism Unity plugin failed to initialize.");
 		}
+#endif
 	}
 
 	private static string StackTrace (Exception e)
 	{
+#if CRITTERCISM_IOS
 		// Allowing for the fact that the "name" and "reason" of the outermost
 		// exception e are already shown in the Crittercism portal, we don't
 		// need to repeat that bit of info.  However, for InnerException's, we
@@ -126,6 +133,9 @@ public static class CrittercismIOS
 			answer = "";
 		}
 		return answer;
+#else
+        return "";
+#endif
 	}
 
 	/// <summary>
@@ -135,10 +145,12 @@ public static class CrittercismIOS
 	/// <param name="e">A caught exception that should be reported to Crittercism.</param>
 	public static void LogHandledException (Exception e)
 	{
+#if CRITTERCISM_IOS
 		if (e == null) {
 			return;
 		}
 		Crittercism_LogHandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
+#endif
 	}
 
 	/// <summary>
@@ -148,7 +160,11 @@ public static class CrittercismIOS
 	/// <returns>True if the user has opted out of Crittercism</returns>
 	public static bool GetOptOut ()
 	{
+#if CRITTERCISM_IOS
 		return Crittercism_GetOptOutStatus ();
+#else
+    return true;
+#endif
 	}
 
 	/// <summary>
@@ -157,7 +173,9 @@ public static class CrittercismIOS
 	/// <param name="isOptedOut">True to opt out of sending data to Crittercism</param>
 	public static void SetOptOut (bool isOptedOut)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_SetOptOutStatus (isOptedOut);
+#endif
 	}
 
 	/// <summary>
@@ -166,7 +184,9 @@ public static class CrittercismIOS
 	/// <param name="username">The user name to set</param>
 	public static void SetUsername (string username)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_SetUsername (username);
+#endif
 	}
 
 	/// <summary>
@@ -178,7 +198,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void SetValue (string val, string key)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_SetValue (val, key);
+#endif
 	}
 
 	/// <summary>
@@ -190,7 +212,9 @@ public static class CrittercismIOS
 	/// <example>LeaveBreadcrumb("Game started");</example>
 	public static void LeaveBreadcrumb (string breadcrumb)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_LeaveBreadcrumb (breadcrumb);
+#endif
 	}
 
 	public static void LogNetworkRequest (string method,
@@ -201,7 +225,9 @@ public static class CrittercismIOS
 	                                      HttpStatusCode responseCode,
 	                                      WebExceptionStatus exceptionStatus)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_LogNetworkRequest (method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
+#endif
 	}
 
 	/// <summary>
@@ -209,11 +235,15 @@ public static class CrittercismIOS
 	/// </summary>
 	public static bool DidCrashOnLastLoad ()
 	{
+#if CRITTERCISM_IOS
 		bool answer = false;
 		if (Application.platform == RuntimePlatform.IPhonePlayer) {
 			answer = Crittercism_DidCrashOnLastLoad ();
 		}
 		return answer;
+#else
+    return false;
+#endif
 	}
 
 	/// <summary>
@@ -221,13 +251,17 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void BeginUserflow (string name)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_BeginUserflow (name);
+#endif
 	}
 
 	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
 	public static void BeginTransaction (string name)
 	{
+#if CRITTERCISM_IOS
 		BeginUserflow (name);
+#endif
 	}
 
 	/// <summary>
@@ -235,7 +269,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void BeginUserflow (string name, int value)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_BeginUserflowWithValue (name, value);
+#endif
 	}
 
 	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
@@ -249,7 +285,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void CancelUserflow (string name)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_CancelUserflow (name);
+#endif
 	}
 
 	[Obsolete("CancelTransaction is deprecated, please use CancelUserflow instead.")]
@@ -263,7 +301,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void EndUserflow (string name)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_EndUserflow (name);
+#endif
 	}
 
 	[Obsolete("EndTransaction is deprecated, please use EndUserflow instead.")]
@@ -277,7 +317,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void FailUserflow (string name)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_FailUserflow (name);
+#endif
 	}
 
 	[Obsolete("FailTransaction is deprecated, please use FailUserflow instead.")]
@@ -291,7 +333,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void SetUserflowValue (string name, int value)
 	{
+#if CRITTERCISM_IOS
 		Crittercism_SetUserflowValue (name, value);
+#endif
 	}
 
 	[Obsolete("SetTransactionValue is deprecated, please use SetUserflowValue instead.")]
@@ -305,7 +349,11 @@ public static class CrittercismIOS
 	/// </summary>
 	public static int GetUserflowValue (string name)
 	{
+#if CRITTERCISM_IOS
 		return Crittercism_GetUserflowValue (name);
+#else
+        return -1;
+#endif
 	}
 
 	[Obsolete("GetTransactionValue is deprecated, please use GetUserflowValue instead.")]
@@ -316,6 +364,7 @@ public static class CrittercismIOS
 
 	private static void OnUnhandledException (object sender, UnhandledExceptionEventArgs args)
 	{
+#if CRITTERCISM_IOS
 		if (args == null || args.ExceptionObject == null) {
 			return;
 		}
@@ -330,6 +379,7 @@ public static class CrittercismIOS
 				Debug.Log ("CrittercismIOS: Failed to log exception");
 			}
 		}
+#endif
 	}
 
 	/// <summary>
@@ -337,7 +387,9 @@ public static class CrittercismIOS
 	/// </summary>
 	public static void SetLogUnhandledExceptionAsCrash (bool value)
 	{
+#if CRITTERCISM_IOS
 		logUnhandledExceptionAsCrash = value;
+#endif
 	}
 
 	/// <summary>
@@ -350,6 +402,7 @@ public static class CrittercismIOS
 
 	private static void OnLogMessageReceived (String name, String stack, LogType type)
 	{
+#if CRITTERCISM_IOS
 		if (type == LogType.Exception) {
 			if (logUnhandledExceptionAsCrash) {
 				Crittercism_LogUnhandledException (name, name, stack, crUnityId);
@@ -357,7 +410,7 @@ public static class CrittercismIOS
 				Crittercism_LogHandledException (name, name, stack, crUnityId);
 			}
 		}
+#endif
 	}
 }
 
-#endif
