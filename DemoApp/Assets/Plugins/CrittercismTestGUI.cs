@@ -25,7 +25,7 @@ public class CrittercismTestGUI : MonoBehaviour
 	{
 		GUIStyle customStyle = new GUIStyle (GUI.skin.button);
 		customStyle.fontSize = 30;
-		const int numberOfButtons = 13;
+		const int numberOfButtons = 14;
 		int screenButtonHeight = Screen.height / numberOfButtons;
 		if (GUI.Button (new Rect (0, 0, Screen.width, screenButtonHeight), "Set Username", customStyle)) {
 			Crittercism.SetUsername ("MommaCritter");
@@ -100,6 +100,9 @@ public class CrittercismTestGUI : MonoBehaviour
 		if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Get Userflow Value", customStyle)) {
 			int value = Crittercism.GetUserflowValue ("UnityUserflow");
 			Debug.Log ("UserflowValue is: " + value);
+		}
+		if (GUI.Button (new Rect (0, 13 * screenButtonHeight, Screen.width, screenButtonHeight), "Crash Me in Native Lib", customStyle)) {
+			TestLib.crashMe ();
 		}
 	}
 	
