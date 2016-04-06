@@ -1,4 +1,6 @@
-#if UNITY_ANDROID
+#if !UNITY_EDITOR && UNITY_ANDROID
+#define CRITTERCISM_ANDROID
+#endif
 
 using UnityEngine;
 using System;
@@ -11,28 +13,33 @@ using System.Text.RegularExpressions;
 
 public static class CrittercismAndroid
 {
-	/// <summary>
-	/// Show debug and log messaged in the console in release mode.
-	/// If true CrittercismIOS logs will not appear in the console.
-	/// </summary>
-	static bool _ShowDebugOnOnRelease = true;
-	private static bool isInitialized = false;
-	private static readonly string CRITTERCISM_CLASS = "com.crittercism.app.Crittercism";
-	private static AndroidJavaClass mCrittercismsPlugin = null;
+    /// <summary>
+    /// Show debug and log messaged in the console in release mode.
+    /// If true CrittercismIOS logs will not appear in the console.
+    /// </summary>
+#if CRITTERCISM_ANDROID
+    static bool _ShowDebugOnOnRelease = true;
+    private static bool isInitialized = false;
+    private static readonly string CRITTERCISM_CLASS = "com.crittercism.app.Crittercism";
+    private static AndroidJavaClass mCrittercismsPlugin = null;
+#endif
 
-	/// <summary>
-	/// Description:
-	/// Start Crittercism for Unity, will start crittercism for android if it is not already active.
-	/// Parameters:
-	/// appID: Crittercisms Provided App ID for this application
-	/// </summary>
-	public static void Init (string appID)
-	{
+    /// <summary>
+    /// Description:
+    /// Start Crittercism for Unity, will start crittercism for android if it is not already active.
+    /// Parameters:
+    /// appID: Crittercisms Provided App ID for this application
+    /// </summary>
+    public static void Init (string appID)
+    {
+#if CRITTERCISM_ANDROID
 		Init (appID, new CrittercismConfig ());
-	}
+#endif
+    }
 
-	public static void Init (string appID, CrittercismConfig config)
-	{
+    public static void Init (string appID, CrittercismConfig config)
+    {
+#if CRITTERCISM_ANDROID
 		if (isInitialized) {
 			UnityEngine.Debug.Log ("CrittercismAndroid is already initialized.");
 			return;
@@ -52,10 +59,12 @@ public static class CrittercismAndroid
 		Application.logMessageReceived += OnLogMessageReceived;
 		isInitialized = true;
 		UnityEngine.Debug.Log ("CrittercismAndroid only supports the Android platform. Crittercism will not be enabled");
-	}
+#endif
+    }
 
-	private static string StackTrace (System.Exception e)
-	{
+    private static string StackTrace (System.Exception e)
+    {
+#if CRITTERCISM_ANDROID
 		// Allowing for the fact that the "name" and "reason" of the outermost
 		// exception e are already shown in the Crittercism portal, we don't
 		// need to repeat that bit of info.  However, for InnerException's, we
@@ -83,92 +92,115 @@ public static class CrittercismAndroid
 			answer = "";
 		}
 		return answer;
-	}
-	
-	/// <summary>
-	/// Log an exception that has been handled in code.
-	/// This exception will be reported to the Crittercism portal.
-	/// </summary>
-	public static void LogHandledException (System.Exception e)
-	{
+#else
+        return "";
+#endif
+    }
+
+    /// <summary>
+    /// Log an exception that has been handled in code.
+    /// This exception will be reported to the Crittercism portal.
+    /// </summary>
+    public static void LogHandledException (System.Exception e)
+    {
+#if CRITTERCISM_ANDROID
 		string name = e.GetType ().FullName;
 		string message = e.Message;
 		string stack = StackTrace (e);
 		PluginCallStatic ("_logHandledException", name, message, stack);
-	}
+#endif
+    }
 
-	private static void LogUnhandledException (System.Exception e)
-	{
+    private static void LogUnhandledException (System.Exception e)
+    {
+#if CRITTERCISM_ANDROID
 		string name = e.GetType ().FullName;
 		string message = e.Message;
 		string stack = StackTrace (e);
 		PluginCallStatic (logUnhandledExceptionAsCrash ? "_logCrashException" : "_logHandledException", name, message, stack);
-	}
+#endif
+    }
 
-	public static void LogNetworkRequest(string method,
-                                         string uriString,
-	                                     long latency,
-	                                     long bytesRead,
-	                                     long bytesSent,
-	                                     HttpStatusCode responseCode,
-	                                     WebExceptionStatus exceptionStatus) {
+    public static void LogNetworkRequest (string method,
+                                          string uriString,
+                                          long latency,
+                                          long bytesRead,
+                                          long bytesSent,
+                                          HttpStatusCode responseCode,
+                                          WebExceptionStatus exceptionStatus)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("logNetworkRequest", method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
-	}
+#endif
+    }
 
-	/// <summary>
-	/// Retrieve whether the user is optted out of Crittercism.
-	/// </summary>
-	public static bool GetOptOut ()
-	{
+    /// <summary>
+    /// Retrieve whether the user is optted out of Crittercism.
+    /// </summary>
+    public static bool GetOptOut ()
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return false;
 		}
 		return PluginCallStatic<bool> ("getOptOutStatus");
-	}
+#else
+        return true;
+#endif
+    }
 
 
-	/// <summary>
-	/// Set if whether the user is opting to use crittercism
-	/// </summary></param>
-	public static void SetOptOut (bool optOutStatus)
-	{
+    /// <summary>
+    /// Set if whether the user is opting to use crittercism
+    /// </summary></param>
+    public static void SetOptOut (bool optOutStatus)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic<bool> ("setOptOutStatus", optOutStatus);
-	}
+#endif
+    }
 
-	/// <summary>
-	/// Did the application crash on the previous load?
-	/// </summary>
-	public static bool DidCrashOnLastLoad ()
-	{
+    /// <summary>
+    /// Did the application crash on the previous load?
+    /// </summary>
+    public static bool DidCrashOnLastLoad ()
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return false;
 		}
 		return PluginCallStatic<bool> ("didCrashOnLastLoad");
-	}
+#else
+        return false;
+#endif
+    }
 
-	/// <summary>
-	/// Set the Username of the user
-	/// This will be reported in the Crittercism Meta.
-	/// </summary>
-	public static void SetUsername (string username)
-	{
+    /// <summary>
+    /// Set the Username of the user
+    /// This will be reported in the Crittercism Meta.
+    /// </summary>
+    public static void SetUsername (string username)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("setUsername", username);
-	}
+#endif
+    }
 
-	/// <summary>
-	/// Add a custom value to the Crittercism Meta.
-	/// </summary>
-	public static void SetMetadata (string[] keys, string[] values)
-	{
+    /// <summary>
+    /// Add a custom value to the Crittercism Meta.
+    /// </summary>
+    public static void SetMetadata (string[] keys, string[] values)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
@@ -179,10 +211,12 @@ public static class CrittercismAndroid
 		for (int i = 0; i < keys.Length; i++) {
 			SetValue (keys [i], values [i]);
 		}
-	}
+#endif
+    }
 
-	public static void SetValue (string key, string value)
-	{
+    public static void SetValue (string key, string value)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
@@ -193,123 +227,141 @@ public static class CrittercismAndroid
 			//consider add a overload method void setMetadata(string key, string value) in java side
 			PluginCallStatic ("setMetadata", jsonObject);
 		}
-	}
+#endif
+    }
 
-	/// <summary>
-	/// Leave a breadcrumb for tracking.
-	/// </summary>
-	public static void LeaveBreadcrumb (string breadcrumb)
-	{
+    /// <summary>
+    /// Leave a breadcrumb for tracking.
+    /// </summary>
+    public static void LeaveBreadcrumb (string breadcrumb)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("leaveBreadcrumb", breadcrumb);
-	}
-		
-	/// <summary>
-	/// Begin a userflow to track ex. login
-	/// </summary>
-	public static void BeginUserflow (string userflowName)
-	{
+#endif
+    }
+
+    /// <summary>
+    /// Begin a userflow to track ex. login
+    /// </summary>
+    public static void BeginUserflow (string userflowName)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("beginTransaction", userflowName);
-	}
+#endif
+    }
 
-	[Obsolete("BeginTransaction is deprecated, please use BeginUserflow instead.")]
-	public static void BeginTransaction (string userflowName)
-	{
-		BeginUserflow (userflowName);
-	}
-	
-	/// <summary>
-	/// Cancel a userflow as if it never existed.
-	/// </summary>
-	public static void CancelUserflow (string userflowName)
-	{
+    [Obsolete ("BeginTransaction is deprecated, please use BeginUserflow instead.")]
+    public static void BeginTransaction (string userflowName)
+    {
+        BeginUserflow (userflowName);
+    }
+
+    /// <summary>
+    /// Cancel a userflow as if it never existed.
+    /// </summary>
+    public static void CancelUserflow (string userflowName)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("cancelTransaction", userflowName);
-	}
+#endif
+    }
 
-	[Obsolete("CancelTransaction is deprecated, please use CancelUserflow instead.")]
-	public static void CancelTransaction (string userflowName)
-	{
-		CancelUserflow (userflowName);
-	}
-		
-	/// <summary>
-	/// Ends a tracked userflow ex. login was successful
-	/// </summary>
-	public static void EndUserflow (string userflowName)
-	{
+    [Obsolete ("CancelTransaction is deprecated, please use CancelUserflow instead.")]
+    public static void CancelTransaction (string userflowName)
+    {
+        CancelUserflow (userflowName);
+    }
+
+    /// <summary>
+    /// Ends a tracked userflow ex. login was successful
+    /// </summary>
+    public static void EndUserflow (string userflowName)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("endTransaction", userflowName);
-	}
+#endif
+    }
 
-	[Obsolete("EndTransaction is deprecated, please use EndUserflow instead.")]
-	public static void EndTransaction (string userflowName)
-	{
-		EndUserflow (userflowName);
-	}
+    [Obsolete ("EndTransaction is deprecated, please use EndUserflow instead.")]
+    public static void EndTransaction (string userflowName)
+    {
+        EndUserflow (userflowName);
+    }
 
-	/// <summary>
-	/// Fails a tracked userflow ex. login error
-	/// </summary>
-	public static void FailUserflow (string userflowName)
-	{
+    /// <summary>
+    /// Fails a tracked userflow ex. login error
+    /// </summary>
+    public static void FailUserflow (string userflowName)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("failTransaction", userflowName);
-	}
+#endif
+    }
 
-	[Obsolete("FailTransaction is deprecated, please use FailUserflow instead.")]
-	public static void FailTransaction (string userflowName)
-	{
-		FailUserflow (userflowName);
-	}
+    [Obsolete ("FailTransaction is deprecated, please use FailUserflow instead.")]
+    public static void FailTransaction (string userflowName)
+    {
+        FailUserflow (userflowName);
+    }
 
-	/// <summary>
-	/// Set a value for a userflow ex. shopping cart value
-	/// </summary>
-	public static void SetUserflowValue (string userflowName, int value)
-	{
+    /// <summary>
+    /// Set a value for a userflow ex. shopping cart value
+    /// </summary>
+    public static void SetUserflowValue (string userflowName, int value)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return;
 		}
 		PluginCallStatic ("setTransactionValue", userflowName, value);
-	}
+#endif
+    }
 
-	[Obsolete("SetTransactionValue is deprecated, please use SetUserflowValue instead.")]
-	public static void SetTransactionValue (string userflowName, int value)
-	{
-		SetUserflowValue (userflowName, value);
-	}
+    [Obsolete ("SetTransactionValue is deprecated, please use SetUserflowValue instead.")]
+    public static void SetTransactionValue (string userflowName, int value)
+    {
+        SetUserflowValue (userflowName, value);
+    }
 
-	/// <summary>
-	/// Get the current value of the tracked userflow
-	/// </summary>
-	public static int GetUserflowValue (string userflowName)
-	{
+    /// <summary>
+    /// Get the current value of the tracked userflow
+    /// </summary>
+    public static int GetUserflowValue (string userflowName)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized) {
 			return -1;
 		}
 		return PluginCallStatic<int> ("getTransactionValue", userflowName);
-	}
+#else
+        return -1;
+#endif
+    }
 
-	[Obsolete("GetTransactionValue is deprecated, please use GetUserflowValue instead.")]
-	public static int GetTransactionValue (string userflowName)
-	{
-		return GetUserflowValue (userflowName);
-	}
+    [Obsolete ("GetTransactionValue is deprecated, please use GetUserflowValue instead.")]
+    public static int GetTransactionValue (string userflowName)
+    {
+        return GetUserflowValue (userflowName);
+    }
 
-	private static void OnUnhandledException (object sender, System.UnhandledExceptionEventArgs args)
-	{
+    private static void OnUnhandledException (object sender, System.UnhandledExceptionEventArgs args)
+    {
+#if CRITTERCISM_ANDROID
 		if (!isInitialized || args == null || args.ExceptionObject == null) {
 			return;
 		}
@@ -317,22 +369,26 @@ public static class CrittercismAndroid
 		if (e != null) {
 			LogUnhandledException (e);
 		}
-	}
+#endif
+    }
 
-	private static volatile bool logUnhandledExceptionAsCrash = false;
-	
-	public static void SetLogUnhandledExceptionAsCrash (bool value)
-	{
+    private static volatile bool logUnhandledExceptionAsCrash = false;
+
+    public static void SetLogUnhandledExceptionAsCrash (bool value)
+    {
+#if CRITTERCISM_ANDROID
 		logUnhandledExceptionAsCrash = value;
-	}
-	
-	public static bool GetLogUnhandledExceptionAsCrash ()
-	{
-		return logUnhandledExceptionAsCrash;
-	}
+#endif
+    }
 
-	private static void OnLogMessageReceived (string name, string stack, LogType type)
-	{
+    public static bool GetLogUnhandledExceptionAsCrash ()
+    {
+        return logUnhandledExceptionAsCrash;
+    }
+
+    private static void OnLogMessageReceived (string name, string stack, LogType type)
+    {
+#if CRITTERCISM_ANDROID
 		if (LogType.Exception != type) {
 			return;
 		}
@@ -349,16 +405,22 @@ public static class CrittercismAndroid
 				}
 			}
 		}
-	}
-
-	private static void PluginCallStatic (string methodName, params object[] args)
-	{
-		mCrittercismsPlugin.CallStatic (methodName, args);
-	}
-
-	private static RetType PluginCallStatic<RetType> (string methodName, params object[] args)
-	{
-		return mCrittercismsPlugin.CallStatic<RetType> (methodName, args);
-	}
-}
 #endif
+    }
+
+    private static void PluginCallStatic (string methodName, params object[] args)
+    {
+#if CRITTERCISM_ANDROID
+		mCrittercismsPlugin.CallStatic (methodName, args);
+#endif
+    }
+
+    private static RetType PluginCallStatic<RetType> (string methodName, params object[] args)
+    {
+#if CRITTERCISM_ANDROID
+		return mCrittercismsPlugin.CallStatic<RetType> (methodName, args);
+#else 
+        return default(RetType);
+#endif
+    }
+}
