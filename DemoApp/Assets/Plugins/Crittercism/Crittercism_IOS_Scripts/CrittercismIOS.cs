@@ -95,7 +95,11 @@ public static class CrittercismIOS
 		try {
 			Crittercism_EnableWithAppID (appID, true);
 			AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+#if UNITY_5 || UNITY_5_3_OR_NEWER
 			Application.logMessageReceived += OnLogMessageReceived;
+#else
+			Application.RegisterLogCallback (OnLogMessageReceived);
+#endif
 			Debug.Log ("CrittercismIOS: Sucessfully Initialized");
 		} catch {
 			Debug.Log ("Crittercism Unity plugin failed to initialize.");
