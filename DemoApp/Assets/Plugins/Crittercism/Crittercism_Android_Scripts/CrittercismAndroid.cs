@@ -6,7 +6,6 @@ using UnityEngine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Net;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
@@ -18,10 +17,10 @@ public static class CrittercismAndroid
     /// If true CrittercismIOS logs will not appear in the console.
     /// </summary>
 #if CRITTERCISM_ANDROID
-    static bool _ShowDebugOnOnRelease = true;
     private static bool isInitialized = false;
     private static readonly string CRITTERCISM_CLASS = "com.crittercism.app.Crittercism";
     private static AndroidJavaClass mCrittercismsPlugin = null;
+    private static volatile bool logUnhandledExceptionAsCrash = false;
 #endif
 
     /// <summary>
@@ -44,21 +43,32 @@ public static class CrittercismAndroid
 			UnityEngine.Debug.Log ("CrittercismAndroid is already initialized.");
 			return;
 		}
+
 		UnityEngine.Debug.Log ("Initializing Crittercism with app id " + appID);
 		mCrittercismsPlugin = new AndroidJavaClass (CRITTERCISM_CLASS);
+
 		if (mCrittercismsPlugin == null) {
 			UnityEngine.Debug.Log ("CrittercismAndroid failed to initialize.  Unable to find class " + CRITTERCISM_CLASS);
 			return;
 		}
+
 		using (var cls_UnityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer")) {
 			using (var objActivity = cls_UnityPlayer.GetStatic<AndroidJavaObject> ("currentActivity")) {
 				PluginCallStatic ("initialize", objActivity, appID, config.GetAndroidConfig ());
 			}
 		}
-		System.AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-		Application.logMessageReceived += OnLogMessageReceived;
+
+        // Unity does not currently support the C# UnhandledException callback.
+        // They're aware of the issue.  When the fix this, we should use this instead of the log callback
+		// System.AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+		
+        #if UNITY_5 || UNITY_5_3_OR_NEWER
+        Application.logMessageReceived += OnLogMessageReceived;
+        #else
+        Application.RegisterLogCallback (OnLogMessageReceived);
+        #endif
+
 		isInitialized = true;
-		UnityEngine.Debug.Log ("CrittercismAndroid only supports the Android platform. Crittercism will not be enabled");
 #endif
     }
 
@@ -365,14 +375,11 @@ public static class CrittercismAndroid
 		if (!isInitialized || args == null || args.ExceptionObject == null) {
 			return;
 		}
-		System.Exception e = args.ExceptionObject as System.Exception;
-		if (e != null) {
-			LogUnhandledException (e);
-		}
+
+    System.Exception e = args.ExceptionObject as System.Exception;
+    LogUnhandledException (e);
 #endif
     }
-
-    private static volatile bool logUnhandledExceptionAsCrash = false;
 
     public static void SetLogUnhandledExceptionAsCrash (bool value)
     {
@@ -383,28 +390,34 @@ public static class CrittercismAndroid
 
     public static bool GetLogUnhandledExceptionAsCrash ()
     {
+#if CRITTERCISM_ANDROID
         return logUnhandledExceptionAsCrash;
+#else
+        return false;
+#endif
     }
 
     private static void OnLogMessageReceived (string name, string stack, LogType type)
     {
+        // Note to developers: If you try puddnig a Debug.Log statement in this method,
+        // Unity will NOT print it. This could be due to the fact that this is a log callback
+        // method and Unity tries to prevent an infinite loop... or I could be wrong.
+        // Nonetheless, don't be surprised if log messages don't get printed in here.
 #if CRITTERCISM_ANDROID
-		if (LogType.Exception != type) {
-			return;
-		}
-		if (!isInitialized) {
-			return;
-		}
-		if (LogType.Exception == type) {
-			if (Application.platform == RuntimePlatform.Android) {
-				if (logUnhandledExceptionAsCrash) {
-					PluginCallStatic ("_logCrashException", name, name, stack);
-				} else {
-					stack = (new Regex("\r\n")).Replace(stack, "\n\tat");
-					PluginCallStatic ("_logHandledException", name, name, stack);
-				}
-			}
-		}
+        if (LogType.Exception != type) {
+            return;
+        }
+
+        if (!isInitialized) {
+            return;
+        }
+
+        if (logUnhandledExceptionAsCrash) {
+            PluginCallStatic ("_logCrashException", name, name, stack);
+        } else {
+            stack = (new Regex ("\r\n")).Replace (stack, "\n\tat");
+            PluginCallStatic ("_logHandledException", name, name, stack);
+        }		
 #endif
     }
 
@@ -419,7 +432,7 @@ public static class CrittercismAndroid
     {
 #if CRITTERCISM_ANDROID
 		return mCrittercismsPlugin.CallStatic<RetType> (methodName, args);
-#else 
+#else
         return default(RetType);
 #endif
     }
