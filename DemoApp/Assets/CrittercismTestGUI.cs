@@ -34,7 +34,6 @@ public class CrittercismTestGUI : MonoBehaviour
     public void LeaveBreadcrumb ()
     {
         Crittercism.LeaveBreadcrumb ("BreadCrumb");
-
     }
 
     public void SetMetadata ()
@@ -93,7 +92,7 @@ public class CrittercismTestGUI : MonoBehaviour
     private void DeepError (int n)
     {
         if (n == 0) {
-            throw new Exception ("Deep Inner Exception");
+            ((String)null).Equals ("crash me");
         } else {
             DeepError (n - 1);
         }
