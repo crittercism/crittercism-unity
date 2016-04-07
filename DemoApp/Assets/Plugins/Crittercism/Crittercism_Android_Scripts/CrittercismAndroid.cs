@@ -32,76 +32,76 @@ public static class CrittercismAndroid
     public static void Init (string appID)
     {
 #if CRITTERCISM_ANDROID
-		Init (appID, new CrittercismConfig ());
+    Init (appID, new CrittercismConfig ());
 #endif
     }
 
     public static void Init (string appID, CrittercismConfig config)
     {
 #if CRITTERCISM_ANDROID
-		if (isInitialized) {
-			UnityEngine.Debug.Log ("CrittercismAndroid is already initialized.");
-			return;
-		}
+    if (isInitialized) {
+      UnityEngine.Debug.Log ("CrittercismAndroid is already initialized.");
+      return;
+    }
 
-		UnityEngine.Debug.Log ("Initializing Crittercism with app id " + appID);
-		mCrittercismsPlugin = new AndroidJavaClass (CRITTERCISM_CLASS);
+    UnityEngine.Debug.Log ("Initializing Crittercism with app id " + appID);
+    mCrittercismsPlugin = new AndroidJavaClass (CRITTERCISM_CLASS);
 
-		if (mCrittercismsPlugin == null) {
-			UnityEngine.Debug.Log ("CrittercismAndroid failed to initialize.  Unable to find class " + CRITTERCISM_CLASS);
-			return;
-		}
+    if (mCrittercismsPlugin == null) {
+      UnityEngine.Debug.Log ("CrittercismAndroid failed to initialize.  Unable to find class " + CRITTERCISM_CLASS);
+      return;
+    }
 
-		using (var cls_UnityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer")) {
-			using (var objActivity = cls_UnityPlayer.GetStatic<AndroidJavaObject> ("currentActivity")) {
-				PluginCallStatic ("initialize", objActivity, appID, config.GetAndroidConfig ());
-			}
-		}
+    using (var cls_UnityPlayer = new AndroidJavaClass ("com.unity3d.player.UnityPlayer")) {
+      using (var objActivity = cls_UnityPlayer.GetStatic<AndroidJavaObject> ("currentActivity")) {
+        PluginCallStatic ("initialize", objActivity, appID, config.GetAndroidConfig ());
+      }
+    }
 
-        // Unity does not currently support the C# UnhandledException callback.
-        // They're aware of the issue.  When the fix this, we should use this instead of the log callback
-		// System.AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
-		
+    // Unity does not currently support the C# UnhandledException callback.
+    // They're aware of the issue.  When the fix this, we should use this instead of the log callback
+    // System.AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
+
         #if UNITY_5 || UNITY_5_3_OR_NEWER
         Application.logMessageReceived += OnLogMessageReceived;
         #else
         Application.RegisterLogCallback (OnLogMessageReceived);
         #endif
 
-		isInitialized = true;
+    isInitialized = true;
 #endif
     }
 
     private static string StackTrace (System.Exception e)
     {
 #if CRITTERCISM_ANDROID
-		// Allowing for the fact that the "name" and "reason" of the outermost
-		// exception e are already shown in the Crittercism portal, we don't
-		// need to repeat that bit of info.  However, for InnerException's, we
-		// will include this information in the StackTrace .  The horizontal
-		// lines (hyphens) separate InnerException's from each other and the
-		// outermost Exception e .
-		string answer = e.StackTrace;
-		// Using seen for cycle detection to break cycling.
-		List<System.Exception> seen = new List<System.Exception> ();
-		seen.Add (e);
-		if (answer != null) {
-			// There has to be some way of telling where InnerException ie stacktrace
-			// ends and main Exception e stacktrace begins.  This is it.
-			answer = ((e.GetType ().FullName + " : " + e.Message + "\r\n")
-				+ answer);
-			System.Exception ie = e.InnerException;
-			while ((ie != null) && (seen.IndexOf(ie) < 0)) {
-				seen.Add (ie);
-				answer = ((ie.GetType ().FullName + " : " + ie.Message + "\r\n")
-					+ (ie.StackTrace + "\r\n")
-					+ answer);
-				ie = ie.InnerException;
-			}
-		} else {
-			answer = "";
-		}
-		return answer;
+    // Allowing for the fact that the "name" and "reason" of the outermost
+    // exception e are already shown in the Crittercism portal, we don't
+    // need to repeat that bit of info.  However, for InnerException's, we
+    // will include this information in the StackTrace .  The horizontal
+    // lines (hyphens) separate InnerException's from each other and the
+    // outermost Exception e .
+    string answer = e.StackTrace;
+    // Using seen for cycle detection to break cycling.
+    List<System.Exception> seen = new List<System.Exception> ();
+    seen.Add (e);
+    if (answer != null) {
+      // There has to be some way of telling where InnerException ie stacktrace
+      // ends and main Exception e stacktrace begins.  This is it.
+      answer = ((e.GetType ().FullName + " : " + e.Message + "\r\n")
+        + answer);
+      System.Exception ie = e.InnerException;
+      while ((ie != null) && (seen.IndexOf(ie) < 0)) {
+        seen.Add (ie);
+        answer = ((ie.GetType ().FullName + " : " + ie.Message + "\r\n")
+          + (ie.StackTrace + "\r\n")
+          + answer);
+        ie = ie.InnerException;
+      }
+    } else {
+      answer = "";
+    }
+    return answer;
 #else
         return "";
 #endif
@@ -114,20 +114,20 @@ public static class CrittercismAndroid
     public static void LogHandledException (System.Exception e)
     {
 #if CRITTERCISM_ANDROID
-		string name = e.GetType ().FullName;
-		string message = e.Message;
-		string stack = StackTrace (e);
-		PluginCallStatic ("_logHandledException", name, message, stack);
+    string name = e.GetType ().FullName;
+    string message = e.Message;
+    string stack = StackTrace (e);
+    PluginCallStatic ("_logHandledException", name, message, stack);
 #endif
     }
 
     private static void LogUnhandledException (System.Exception e)
     {
 #if CRITTERCISM_ANDROID
-		string name = e.GetType ().FullName;
-		string message = e.Message;
-		string stack = StackTrace (e);
-		PluginCallStatic (logUnhandledExceptionAsCrash ? "_logCrashException" : "_logHandledException", name, message, stack);
+    string name = e.GetType ().FullName;
+    string message = e.Message;
+    string stack = StackTrace (e);
+    PluginCallStatic (logUnhandledExceptionAsCrash ? "_logCrashException" : "_logHandledException", name, message, stack);
 #endif
     }
 
@@ -140,10 +140,10 @@ public static class CrittercismAndroid
                                           WebExceptionStatus exceptionStatus)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("logNetworkRequest", method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("logNetworkRequest", method, uriString, latency, bytesRead, bytesSent, (int)responseCode, (int)exceptionStatus);
 #endif
     }
 
@@ -153,10 +153,10 @@ public static class CrittercismAndroid
     public static bool GetOptOut ()
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return false;
-		}
-		return PluginCallStatic<bool> ("getOptOutStatus");
+    if (!isInitialized) {
+      return false;
+    }
+    return PluginCallStatic<bool> ("getOptOutStatus");
 #else
         return true;
 #endif
@@ -169,10 +169,10 @@ public static class CrittercismAndroid
     public static void SetOptOut (bool optOutStatus)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic<bool> ("setOptOutStatus", optOutStatus);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic<bool> ("setOptOutStatus", optOutStatus);
 #endif
     }
 
@@ -182,10 +182,10 @@ public static class CrittercismAndroid
     public static bool DidCrashOnLastLoad ()
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return false;
-		}
-		return PluginCallStatic<bool> ("didCrashOnLastLoad");
+    if (!isInitialized) {
+      return false;
+    }
+    return PluginCallStatic<bool> ("didCrashOnLastLoad");
 #else
         return false;
 #endif
@@ -198,10 +198,10 @@ public static class CrittercismAndroid
     public static void SetUsername (string username)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("setUsername", username);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("setUsername", username);
 #endif
     }
 
@@ -211,32 +211,32 @@ public static class CrittercismAndroid
     public static void SetMetadata (string[] keys, string[] values)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		if (keys.Length != values.Length) {
-			UnityEngine.Debug.Log ("Crittercism.SetMetadata given arrays of different lengths");
-			return;
-		}
-		for (int i = 0; i < keys.Length; i++) {
-			SetValue (keys [i], values [i]);
-		}
+    if (!isInitialized) {
+      return;
+    }
+    if (keys.Length != values.Length) {
+      UnityEngine.Debug.Log ("Crittercism.SetMetadata given arrays of different lengths");
+      return;
+    }
+    for (int i = 0; i < keys.Length; i++) {
+      SetValue (keys [i], values [i]);
+    }
 #endif
     }
 
     public static void SetValue (string key, string value)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		using (var jsonObject = new AndroidJavaObject ("org.json.JSONObject")) {
-			jsonObject.Call<AndroidJavaObject> ("put", key, value);
+    if (!isInitialized) {
+      return;
+    }
+    using (var jsonObject = new AndroidJavaObject ("org.json.JSONObject")) {
+      jsonObject.Call<AndroidJavaObject> ("put", key, value);
 
-			//TODO: using AndroidJavaClass and AndroidJavaObject can be really expensive in C#
-			//consider add a overload method void setMetadata(string key, string value) in java side
-			PluginCallStatic ("setMetadata", jsonObject);
-		}
+      //TODO: using AndroidJavaClass and AndroidJavaObject can be really expensive in C#
+      //consider add a overload method void setMetadata(string key, string value) in java side
+      PluginCallStatic ("setMetadata", jsonObject);
+    }
 #endif
     }
 
@@ -246,10 +246,10 @@ public static class CrittercismAndroid
     public static void LeaveBreadcrumb (string breadcrumb)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("leaveBreadcrumb", breadcrumb);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("leaveBreadcrumb", breadcrumb);
 #endif
     }
 
@@ -259,10 +259,10 @@ public static class CrittercismAndroid
     public static void BeginUserflow (string userflowName)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("beginTransaction", userflowName);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("beginTransaction", userflowName);
 #endif
     }
 
@@ -278,10 +278,10 @@ public static class CrittercismAndroid
     public static void CancelUserflow (string userflowName)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("cancelTransaction", userflowName);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("cancelTransaction", userflowName);
 #endif
     }
 
@@ -297,10 +297,10 @@ public static class CrittercismAndroid
     public static void EndUserflow (string userflowName)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("endTransaction", userflowName);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("endTransaction", userflowName);
 #endif
     }
 
@@ -316,10 +316,10 @@ public static class CrittercismAndroid
     public static void FailUserflow (string userflowName)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("failTransaction", userflowName);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("failTransaction", userflowName);
 #endif
     }
 
@@ -335,10 +335,10 @@ public static class CrittercismAndroid
     public static void SetUserflowValue (string userflowName, int value)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return;
-		}
-		PluginCallStatic ("setTransactionValue", userflowName, value);
+    if (!isInitialized) {
+      return;
+    }
+    PluginCallStatic ("setTransactionValue", userflowName, value);
 #endif
     }
 
@@ -354,10 +354,10 @@ public static class CrittercismAndroid
     public static int GetUserflowValue (string userflowName)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized) {
-			return -1;
-		}
-		return PluginCallStatic<int> ("getTransactionValue", userflowName);
+    if (!isInitialized) {
+      return -1;
+    }
+    return PluginCallStatic<int> ("getTransactionValue", userflowName);
 #else
         return -1;
 #endif
@@ -372,9 +372,9 @@ public static class CrittercismAndroid
     private static void OnUnhandledException (object sender, System.UnhandledExceptionEventArgs args)
     {
 #if CRITTERCISM_ANDROID
-		if (!isInitialized || args == null || args.ExceptionObject == null) {
-			return;
-		}
+    if (!isInitialized || args == null || args.ExceptionObject == null) {
+      return;
+    }
 
     System.Exception e = args.ExceptionObject as System.Exception;
     LogUnhandledException (e);
@@ -384,7 +384,7 @@ public static class CrittercismAndroid
     public static void SetLogUnhandledExceptionAsCrash (bool value)
     {
 #if CRITTERCISM_ANDROID
-		logUnhandledExceptionAsCrash = value;
+    logUnhandledExceptionAsCrash = value;
 #endif
     }
 
@@ -417,21 +417,21 @@ public static class CrittercismAndroid
         } else {
             stack = (new Regex ("\r\n")).Replace (stack, "\n\tat");
             PluginCallStatic ("_logHandledException", name, name, stack);
-        }		
+        }
 #endif
     }
 
     private static void PluginCallStatic (string methodName, params object[] args)
     {
 #if CRITTERCISM_ANDROID
-		mCrittercismsPlugin.CallStatic (methodName, args);
+    mCrittercismsPlugin.CallStatic (methodName, args);
 #endif
     }
 
     private static RetType PluginCallStatic<RetType> (string methodName, params object[] args)
     {
 #if CRITTERCISM_ANDROID
-		return mCrittercismsPlugin.CallStatic<RetType> (methodName, args);
+        return mCrittercismsPlugin.CallStatic<RetType> (methodName, args);
 #else
         return default(RetType);
 #endif
