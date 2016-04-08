@@ -22,11 +22,11 @@ public class CrittercismTestGUI : MonoBehaviour
             Crittercism.SetUsername ("MommaCritter");
         }
         if (GUI.Button (new Rect (0, screenButtonHeight, Screen.width, screenButtonHeight), "Set Metadata", customStyle)) {
-            Crittercism.SetValue ("Game Level", "Status");
-            Crittercism.SetValue ("5", "Crashes a lot");
+            Crittercism.SetValue ("Game Level", "5");
+            Crittercism.SetValue ("Status", "Crashes a lot");
         }
         if (GUI.Button (new Rect (0, 2 * screenButtonHeight, Screen.width, screenButtonHeight), "Leave Breadcrumb", customStyle)) {
-            Crittercism.LeaveBreadcrumb ("BreadCrumb");
+            Crittercism.LeaveBreadcrumb ("This is an illuminating piece of information");
         }
         if (GUI.Button (new Rect (0, 3 * screenButtonHeight, Screen.width, screenButtonHeight), "Log Network Request", customStyle)) {
 
