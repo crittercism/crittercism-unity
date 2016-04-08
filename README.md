@@ -11,7 +11,7 @@ Integration instructions and an API reference are available on the Apteligent do
 
 *New*
 
-* Unified the old Crittercism iOS and Android plugins with a single Crittercism interface. The CrittercismIOS and CrittercismAndroid classes are still available, but we strongly recommend using the new Crittercism class as it works for the iOS and Android.
+* Unified the old Crittercism iOS and Android plugins with a single Crittercism interface. The CrittercismIOS and CrittercismAndroid classes are still available, but we strongly recommend using the new Crittercism class as it works for both iOS and Android builds.
 * The iOS plugin now logs breadcrumbs asynchronously.
 * The DemoApp now uses Unity's WWW and UnityWebRequest APIs to demonstrate Crittercism's network insights capabilities.
 
