@@ -16,8 +16,9 @@ public class CrittercismTestGUI : MonoBehaviour
     {
         GUIStyle customStyle = new GUIStyle (GUI.skin.button);
         customStyle.fontSize = 30;
-        const int numberOfButtons = 13;
+        const int numberOfButtons = 12;
         int screenButtonHeight = Screen.height / numberOfButtons;
+
         if (GUI.Button (new Rect (0, 0, Screen.width, screenButtonHeight), "Set Username", customStyle)) {
             Crittercism.SetUsername ("MommaCritter");
         }
@@ -55,29 +56,22 @@ public class CrittercismTestGUI : MonoBehaviour
                 Crittercism.LogHandledException (e);
             }
         }
-        if (GUI.Button (new Rect (0, 6 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Null Pointer Exception", customStyle)) {
-            try {
-                causeNullPointerException ();
-            } catch (Exception e) {
-                Crittercism.LogHandledException (e);
-            }
-        }
-        if (GUI.Button (new Rect (0, 7 * screenButtonHeight, Screen.width, screenButtonHeight), "Begin Userflow", customStyle)) {
+        if (GUI.Button (new Rect (0, 6 * screenButtonHeight, Screen.width, screenButtonHeight), "Begin Userflow", customStyle)) {
             Crittercism.BeginUserflow ("UnityUserflow");
         }
-        if (GUI.Button (new Rect (0, 8 * screenButtonHeight, Screen.width, screenButtonHeight), "End Userflow", customStyle)) {
+        if (GUI.Button (new Rect (0, 7 * screenButtonHeight, Screen.width, screenButtonHeight), "End Userflow", customStyle)) {
             Crittercism.EndUserflow ("UnityUserflow");
         }
-        if (GUI.Button (new Rect (0, 9 * screenButtonHeight, Screen.width, screenButtonHeight), "Fail Userflow", customStyle)) {
+        if (GUI.Button (new Rect (0, 8 * screenButtonHeight, Screen.width, screenButtonHeight), "Fail Userflow", customStyle)) {
             Crittercism.FailUserflow ("UnityUserflow");
         }
-        if (GUI.Button (new Rect (0, 10 * screenButtonHeight, Screen.width, screenButtonHeight), "Cancel Userflow", customStyle)) {
+        if (GUI.Button (new Rect (0, 9 * screenButtonHeight, Screen.width, screenButtonHeight), "Cancel Userflow", customStyle)) {
             Crittercism.CancelUserflow ("UnityUserflow");
         }
-        if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Set Userflow Value", customStyle)) {
+        if (GUI.Button (new Rect (0, 10 * screenButtonHeight, Screen.width, screenButtonHeight), "Set Userflow Value", customStyle)) {
             Crittercism.SetUserflowValue ("UnityUserflow", 500);
         }
-        if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Get Userflow Value", customStyle)) {
+        if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Get Userflow Value", customStyle)) {
             int value = Crittercism.GetUserflowValue ("UnityUserflow");
             Debug.Log ("UserflowValue is: " + value);
         }
