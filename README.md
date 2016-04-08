@@ -19,6 +19,6 @@ Integration instructions and an API reference are available on the Apteligent do
 
 * The iOS plugin caused duplicate symbol linker errors when compiling with IL2CPP on iOS
 * When compiling for Android with IL2CPP turned on, the iOS plugin would cause compile errors since it was not #ifdef'd properly.
-* The iOS plugin would hang during a crash when Script Call Optimizations were set to Fast but no Exceptions and IL2CPP was turned on.
+* The iOS plugin would hang during a crash when Script Call Optimizations was set to Fast but no Exceptions and IL2CPP was turned on.
 * When compiling on Unity 4.x, a compile error would result because the ``Application.logMessageReceived`` API was not available in 4.x
 
