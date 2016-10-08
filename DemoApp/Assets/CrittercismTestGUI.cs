@@ -4,19 +4,17 @@ using UnityEngine;
 using System.Collections;
 using UnityEngine.Experimental.Networking;
 
-public class CrittercismTestGUI : MonoBehaviour
-{
+public class CrittercismTestGUI : MonoBehaviour {
 
     private CrittercismTestGUI() {
         Debug.Log ("DidCrashOnLastLoad: " + Crittercism.DidCrashOnLastLoad ());
         Crittercism.SetLogUnhandledExceptionAsCrash (true);
     }
 
-    public void OnGUI ()
-    {
+    public void OnGUI () {
         GUIStyle customStyle = new GUIStyle (GUI.skin.button);
         customStyle.fontSize = 30;
-        const int numberOfButtons = 11;
+        const int numberOfButtons = 13;
         int screenButtonHeight = Screen.height / numberOfButtons;
 
         if (GUI.Button (new Rect (0, 0, Screen.width, screenButtonHeight), "Set Username", customStyle)) {
@@ -39,15 +37,18 @@ public class CrittercismTestGUI : MonoBehaviour
             // If you use a 3rd party networking API, you may log network performance information like this:
             Crittercism.LogNetworkRequest(
                 "GET",
-                "http://myurl.com",
+                "https://myurl.com",
                 250,                  // latency in milliseconds
                 1024,                 // number of bytes received
                 2048,                 // number of bytes sent
                 (HttpStatusCode)200,  // http status code
                 WebExceptionStatus.Success);
         }
-        if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Crash", customStyle)) {
-            crashInnerException ();
+		if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Unhandled Exception (Crash)", customStyle)) {
+			// (iOS) This will cause an app crash while in 'Fast no Exceptions' mode 
+			// (iOS) and an exception in 'Slow and Safe' mode
+            // crashInnerException ();
+			causeNullPointerException ();
         }
         if (GUI.Button (new Rect (0, 5 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Handled Exception", customStyle)) {
             try {
@@ -79,10 +80,16 @@ public class CrittercismTestGUI : MonoBehaviour
             value++;
             Crittercism.SetUserflowValue ("UnityUserflow", value);
         }
+		if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as CRASH", customStyle)) {
+			Crittercism.SetLogUnhandledExceptionAsCrash (true);
+		}
+		if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as EXCEPTION", customStyle)) {
+			Crittercism.SetLogUnhandledExceptionAsCrash (false);
+		}
     }
 
     IEnumerator UnityWebRequestGet() {
-        using(UnityWebRequest www = UnityWebRequest.Get("http://httpbin.org/status/418")) {
+        using(UnityWebRequest www = UnityWebRequest.Get("https://httpbin.org/status/418")) {
             yield return www.Send();
 
             if(www.isError) {
@@ -98,7 +105,7 @@ public class CrittercismTestGUI : MonoBehaviour
         form.AddField ("fieldName", "fieldValue");
         form.AddField ("test", "data");
 
-        using(UnityWebRequest www = UnityWebRequest.Post("http://httpbin.org/post", form)) {
+        using(UnityWebRequest www = UnityWebRequest.Post("https://httpbin.org/post", form)) {
             yield return www.Send();
 
             if(www.isError) {
@@ -110,21 +117,18 @@ public class CrittercismTestGUI : MonoBehaviour
         }
     }
 
-    IEnumerator WWWRequest()
-    {
-        WWW www = new WWW("http://httpbin.org/get");
+    IEnumerator WWWRequest() {
+        WWW www = new WWW("https://httpbin.org/get");
         yield return www;
         // check for errors
-        if (www.error == null)
-        {
+        if (www.error == null) {
             Debug.Log("WWW Ok!: " + www.data);
         } else {
             Debug.Log("WWW Error: "+ www.error);
         }    
     }
 
-    public void DeepError (int n)
-    {
+    public void DeepError (int n) {
         if (n == 0) {
             throw new Exception ("Deep Inner Exception");
         } else {
@@ -132,8 +136,7 @@ public class CrittercismTestGUI : MonoBehaviour
         }
     }
 
-    public void crashInnerException ()
-    {
+    public void crashInnerException () {
         try {
             DeepError (4);
         } catch (Exception ie) {
@@ -141,8 +144,7 @@ public class CrittercismTestGUI : MonoBehaviour
         }
     }
 
-    void causeNullPointerException ()
-    {
+    void causeNullPointerException () {
         object o = null;
         o.GetHashCode ();
     }
