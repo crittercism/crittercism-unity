@@ -47,8 +47,8 @@ public class CrittercismTestGUI : MonoBehaviour {
 		if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Unhandled Exception (Crash)", customStyle)) {
 			// (iOS) This will cause an app crash while in 'Fast no Exceptions' mode 
 			// (iOS) and an exception in 'Slow and Safe' mode
-            // crashInnerException ();
-			causeNullPointerException ();
+            crashInnerException ();
+			// causeNullPointerException ();
         }
         if (GUI.Button (new Rect (0, 5 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Handled Exception", customStyle)) {
             try {
