@@ -378,7 +378,6 @@ public static class CrittercismIOS
 		try {
 			Exception e = args.ExceptionObject as Exception;
 			if (e != null) {
-				// Should never get here since the Init() call would have bailed on the same if statement
 				Crittercism_LogUnhandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
 			}
 		} catch {
