@@ -8,7 +8,7 @@ public class CrittercismTestGUI : MonoBehaviour {
 
     private CrittercismTestGUI() {
         Debug.Log ("DidCrashOnLastLoad: " + Crittercism.DidCrashOnLastLoad ());
-        Crittercism.SetLogUnhandledExceptionAsCrash (true);
+        Crittercism.SetLogUnhandledExceptionAsCrash (false);
     }
 
     public void OnGUI () {
