@@ -14,7 +14,7 @@ public class CrittercismTestGUI : MonoBehaviour {
     public void OnGUI () {
         GUIStyle customStyle = new GUIStyle (GUI.skin.button);
         customStyle.fontSize = 30;
-        const int numberOfButtons = 13;
+        const int numberOfButtons = 15;
         int screenButtonHeight = Screen.height / numberOfButtons;
 
         if (GUI.Button (new Rect (0, 0, Screen.width, screenButtonHeight), "Set Username", customStyle)) {
@@ -44,11 +44,11 @@ public class CrittercismTestGUI : MonoBehaviour {
                 (HttpStatusCode)200,  // http status code
                 WebExceptionStatus.Success);
         }
-		if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Unhandled Exception (Crash)", customStyle)) {
-			// (iOS) This will cause an app crash while in 'Fast no Exceptions' mode 
-			// (iOS) and an exception in 'Slow and Safe' mode
+        if (GUI.Button (new Rect (0, 4 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Unhandled Exception (Crash)", customStyle)) {
+            // (iOS) This will cause an app crash while in 'Fast no Exceptions' mode 
+            // (iOS) and an exception in 'Slow and Safe' mode
             crashInnerException ();
-			// causeNullPointerException ();
+            // causeNullPointerException ();
         }
         if (GUI.Button (new Rect (0, 5 * screenButtonHeight, Screen.width, screenButtonHeight), "C# Handled Exception", customStyle)) {
             try {
@@ -80,12 +80,18 @@ public class CrittercismTestGUI : MonoBehaviour {
             value++;
             Crittercism.SetUserflowValue ("UnityUserflow", value);
         }
-		if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as CRASH", customStyle)) {
-			Crittercism.SetLogUnhandledExceptionAsCrash (true);
-		}
-		if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as EXCEPTION", customStyle)) {
-			Crittercism.SetLogUnhandledExceptionAsCrash (false);
-		}
+        if (GUI.Button (new Rect (0, 11 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as CRASH", customStyle)) {
+            Crittercism.SetLogUnhandledExceptionAsCrash (true);
+        }
+        if (GUI.Button (new Rect (0, 12 * screenButtonHeight, Screen.width, screenButtonHeight), "Log unhandled exceptions as EXCEPTION", customStyle)) {
+            Crittercism.SetLogUnhandledExceptionAsCrash (false);
+        }
+        if (GUI.Button (new Rect (0, 13 * screenButtonHeight, Screen.width, screenButtonHeight), "Set opt-out to TRUE", customStyle)) {
+            Crittercism.SetOptOut (true);
+        }
+        if (GUI.Button (new Rect (0, 14 * screenButtonHeight, Screen.width, screenButtonHeight), "Set opt-out to FALSE", customStyle)) {
+            Crittercism.SetOptOut (false);
+        }
     }
 
     IEnumerator UnityWebRequestGet() {
