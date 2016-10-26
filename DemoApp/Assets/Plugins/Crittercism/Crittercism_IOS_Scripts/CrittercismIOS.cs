@@ -15,10 +15,13 @@ public static class CrittercismIOS
 	private static extern void Crittercism_EnableWithAppID (string appID, bool enableServiceMonitoring);
 
 	[DllImport("__Internal")]
-	private static extern bool Crittercism_LogHandledException (string name, string reason, string stack, int platformId);
+	private static extern void Crittercism_LogHandledException (string name, string reason, string stack, int platformId);
 
 	[DllImport("__Internal")]
 	private static extern void Crittercism_LogUnhandledException (string name, string reason, string stack, int platformId);
+
+	[DllImport("__Internal")]
+	private static extern void Crittercism_LogHandledExceptionAsCrash (string name, string reason, string stack, int platformId);
 
 	[DllImport("__Internal")]
 	private static extern bool Crittercism_LogNetworkRequest(string method,
@@ -375,7 +378,6 @@ public static class CrittercismIOS
 		try {
 			Exception e = args.ExceptionObject as Exception;
 			if (e != null) {
-				// Should never get here since the Init() call would have bailed on the same if statement
 				Crittercism_LogUnhandledException (e.GetType ().FullName, e.Message, StackTrace (e), crUnityId);
 			}
 		} catch {
@@ -409,7 +411,7 @@ public static class CrittercismIOS
 #if CRITTERCISM_IOS
 		if (type == LogType.Exception) {
 			if (logUnhandledExceptionAsCrash) {
-				Crittercism_LogUnhandledException (name, name, stack, crUnityId);
+				Crittercism_LogHandledExceptionAsCrash (name, name, stack, crUnityId);
 			} else {
 				Crittercism_LogHandledException (name, name, stack, crUnityId);
 			}

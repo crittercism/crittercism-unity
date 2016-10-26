@@ -172,7 +172,7 @@ public static class CrittercismAndroid
     if (!isInitialized) {
       return;
     }
-    PluginCallStatic<bool> ("setOptOutStatus", optOutStatus);
+    PluginCallStatic("setOptOutStatus", optOutStatus);
 #endif
     }
 
