@@ -7,6 +7,19 @@ Integration instructions and an API reference are available on the Apteligent do
 
 # Release Notes
 
+## Version 2.1.1 (Nov 30, 2016)
+
+*New*
+
+* Updated the native iOS SDK to version 5.6.4. Please see iOS SDK release notes for a full outline of the changes: https://docs.apteligent.com/release_notes/release_notes_ios.html
+
+## Version 2.1.0 (Oct 25, 2016)
+
+*New*
+
+* Updated the native iOS SDK to version 5.6.3-rc.3. Please see iOS SDK release notes for a full outline of the changes: https://docs.apteligent.com/release_notes/release_notes_ios.html
+* Updated the native Android SDK to 5.8.2. Please see Android SDK release notes for a full outline of the changes: https://docs.apteligent.com/release_notes/release_notes_android.html
+
 ## Version 2.0.0 (April 8, 2016)
 
 *New*
