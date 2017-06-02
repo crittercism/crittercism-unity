@@ -7,6 +7,13 @@ Integration instructions and an API reference are available on the Apteligent do
 
 # Release Notes
 
+## Version 2.1.2 (May 30, 2017)
+
+*New*
+
+* Added App Load userflow for Android devices running Marshmallow and above.
+* Updated the native Android SDK to 5.8.8. Please see Android SDK release notes for a full outline of the changes: https://docs.apteligent.com/release_notes/release_notes_android.html
+
 ## Version 2.1.1 (Nov 30, 2016)
 
 *New*
